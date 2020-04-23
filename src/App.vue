@@ -36,6 +36,10 @@ body {
 }
 </style>
 <style scoped>
+/* .content >>> .robot-name {
+  color: red;
+  border: 2px blue solid;
+} */
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
