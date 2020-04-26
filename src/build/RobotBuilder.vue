@@ -44,7 +44,7 @@
         position="bottom"
         @partSelected="part => selectedRobot.base=part" />
     </div>
-    <div>
+    <!-- <div>
       <h1>Cart</h1>
       <table>
         <thead>
@@ -60,7 +60,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -72,6 +72,16 @@ import CollapsibleSection from '../shared/CollapsibleSection.vue';
 
 export default {
   name: 'RobotBuilder',
+  beforeRouteLeave(to, from, next) {
+    if (this.addToCart) {
+      next(true);
+    } else {
+      // eslint-disable-next-line no-restricted-globals
+      /* eslint-disable */
+      const resp = confirm('You have not added your robot to your card');
+      resp(resp);
+    }
+  },
   components: {
     PartSelector,
     CollapsibleSection,
@@ -80,6 +90,7 @@ export default {
     return {
       cart: [],
       availableParts,
+      addedToCart: false,
       selectedRobot: {
         head: {},
         leftArm: {},
@@ -106,10 +117,12 @@ export default {
         + robot.rightArm.cost
         + robot.base.cost;
 
+      this.$store.commit('addRobotToCard', Object.assign({}, robot, { cost }));
       // eslint-disable-next-line prefer-object-spread
-      this.cart.push(Object.assign({}, robot, { cost }));
+      // this.cart.push(Object.assign({}, robot, { cost }));
       console.log('Cart', this.cart);
       console.log('Cost', cost);
+      this.addedToCart = true;
     },
   },
 };

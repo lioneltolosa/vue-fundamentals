@@ -1,21 +1,29 @@
 <template>
   <div id="app">
     <header>
-        <nav>
-            <ul>
-              <li class="nav-item">
-                <router-link active-class="foo" class="nav-link" :to="{ name: 'Home'}" exact>
-                    <img class="logo" src="./assets/build-a-bot-logo.png">
-                    Built a Bot
-                  </router-link>
-                </li>
-              <li class="nav-item">
-                  <router-link active-class="foo" class="nav-link" :to="{ name: 'Build'}" exact>
-                    Built
-                  </router-link>
-                </li>
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li class="nav-item">
+            <router-link active-class="foo" class="nav-link" :to="{ name: 'Home'}" exact>
+              <img class="logo" src="./assets/build-a-bot-logo.png">
+                Built a Bot
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link active-class="foo" class="nav-link" :to="{ name: 'Build'}" exact>
+              Built
+            </router-link>
+          </li>
+          <li class="nav-item cart">
+            <router-link active-class="foo" class="nav-link" :to="{ name: 'Cart'}" exact>
+              Cart
+            </router-link>
+            <div class="cart-list">
+              {{cart.length}}
+            </div>
+          </li>
+        </ul>
+      </nav>
     </header>
     <div class="container">
       <aside class="aside">
@@ -31,6 +39,11 @@
 <script>
 export default {
   name: 'App',
+  computed: {
+    cart() {
+      return this.$store.state.cart;
+    },
+  },
 };
 </script>
 
@@ -80,6 +93,11 @@ ul {
   font-size: 22px;
   border-right: 1px solid #bbb;
 }
+.nav-item.cart {
+  position: relative;
+  margin-left: auto;
+  border-right: none;
+}
 .logo {
   vertical-align: middle;
   height: 30px;
@@ -94,5 +112,16 @@ ul {
   background-color: #aaa;
   width: 100px;
   min-height: 300px;
+}
+.cart-list {
+  position: absolute;
+  top: -5px;
+  right: -9px;
+  font-size: 15px;
+  width: 20px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 100px;
+  background-color: mediumpurple;
 }
 </style>

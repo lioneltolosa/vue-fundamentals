@@ -5,14 +5,13 @@ import HomePage from '../home/HomePage.vue';
 import RobotBuilder from '../build/RobotBuilder.vue';
 import PartInfo from '../parts/PartsInfo.vue';
 import BrowseParts from '../parts/BrowseParts.vue';
-
 import RobotHeads from '../parts/RobotHeads.vue';
 import RobotArms from '../parts/RobotArms.vue';
 import RobotTorsos from '../parts/RobotTorsos.vue';
 import RobotBases from '../parts/RobotBases.vue';
 import SideBarStandard from '../sidebar/SideBarStandard.vue';
 import SideBarBuild from '../sidebar/SideBarBuild.vue';
-
+import ShoppingCart from '../card/ShoppingCart.vue';
 
 Vue.use(VueRouter);
 
@@ -64,6 +63,15 @@ const routes = [
     name: 'Parts',
     component: PartInfo,
     props: true,
+    beforeEnter(to, from, next) {
+      const isValidId = Number.isInteger(Number(to.params.id));
+      next(isValidId);
+    },
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: ShoppingCart,
   },
 ];
 
