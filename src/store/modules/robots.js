@@ -8,7 +8,7 @@ export default {
     foo: 'robots-foo',
   },
   mutations: {
-    addRobotToCard(state, robot) {
+    addRobotToCart(state, robot) {
       state.cart.push(robot);
     },
     updateParts(state, parts) {
@@ -18,12 +18,12 @@ export default {
   actions: {
     getParts({ commit }) {
       axios.get('/api/parts')
-        .then((resp) => commit('updateParts', resp.data))
+        .then((result) => commit('updateParts', result.data))
         .catch(console.error);
     },
     addRobotToCart({ commit, state }, robot) {
-      const savedCartItems = [...state.cart, robot];
-      return axios.post('/api/cart', savedCartItems)
+      const cart = [...state.cart, robot];
+      return axios.post('/api/cart', cart)
         .then(() => commit('addRobotToCart', robot));
     },
   },
@@ -32,7 +32,8 @@ export default {
       return state.cart.filter((item) => item.head.onSale);
     },
     foo(state) {
-      return `root-getter/${state.foo}`;
+      return `robots-getter/${state.foo}`;
     },
+
   },
 };
