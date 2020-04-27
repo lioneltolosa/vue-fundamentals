@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div v-if="availableParts" class="content">
     <div class="preview">
       <CollapsibleSection>
         <div class="preview-content">
@@ -65,13 +65,18 @@
 </template>
 
 <script>
-import availableParts from '../data/parts';
+/* import availableParts from '../data/parts'; */
+import { mapActions } from 'vuex';
+
 import createHookMixin from './create-hook-mixin';
 import PartSelector from './PartSelector.vue';
 import CollapsibleSection from '../shared/CollapsibleSection.vue';
 
 export default {
   name: 'RobotBuilder',
+  created() {
+    this.getParts();
+  },
   beforeRouteLeave(to, from, next) {
     if (this.addToCart) {
       next(true);
@@ -89,7 +94,7 @@ export default {
   data() {
     return {
       cart: [],
-      availableParts,
+      // availableParts,
       addedToCart: false,
       selectedRobot: {
         head: {},
@@ -104,11 +109,16 @@ export default {
     createHookMixin,
   ],
   computed: {
+    availableParts() {
+      return this.$store.state.robots.parts;
+    },
     headBorderStyle() {
       return this.selectedRobot.head.onSale ? 'sale-border' : '';
     },
   },
   methods: {
+    ...mapActions('robots', ['getParts', 'addRobotToCart']),
+    //...mapMutations('robots', ['someMutations']),
     addToCart() {
       const robot = this.selectedRobot;
       const cost = robot.head.cost
@@ -116,8 +126,9 @@ export default {
         + robot.torso.cost
         + robot.rightArm.cost
         + robot.base.cost;
-
-      this.$store.commit('addRobotToCard', Object.assign({}, robot, { cost }));
+      this.addRobotToCart(Object.assign({}, robot, { cost }))
+      /* this.$store.dispatch('robots/addRobotToCart', Object.assign({}, robot, { cost })) */
+        .then(() => this.$router.push('/cart'))
       // eslint-disable-next-line prefer-object-spread
       // this.cart.push(Object.assign({}, robot, { cost }));
       console.log('Cart', this.cart);
