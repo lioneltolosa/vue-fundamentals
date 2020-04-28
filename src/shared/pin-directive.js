@@ -22,13 +22,27 @@
 // Passing  data  to directive
 
 // Another way more flexible
+/* function applyStyles(element, binding) {
+  Object.keys(binding.value).forEach((position) => {
+    element.style[position] = binding.value[position];
+  });
+  element.style.position = 'absolute';
+}
 export default {
   bind: (element, binding) => {
-    Object.keys(binding.value).forEach((position) => {
-      element.style[position] = binding.value[position];
-    });
-    element.style.position = 'absolute';
+    applyStyles(element, binding);
   },
-};
-
+  update: (element, binding) => {
+    applyStyles(element, binding);
+  },
+}; */
 // Another way more flexible
+
+// The better way in all world . Use bing and update in only one function
+
+export default function (element, binding) {
+  Object.keys(binding.value).forEach((position) => {
+    element.style[position] = binding.value[position];
+  });
+  element.style.position = 'absolute';
+}
